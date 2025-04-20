@@ -178,3 +178,5 @@ data/
 logs/
 profiles/
 artifacts/
+
+result.txt
