@@ -21,9 +21,6 @@ unzip -qq imagenet-object-localization-challenge.zip '*.JPEG' -d ./data
 # Copy dataset to desired location
 cp -r /cache/data/ILSVRC/Data/CLS-LOC/* "$STUDIO_DIR/data/" 2>/dev/null
 
-# Remove main.py if exists
-rm -f main.py
-
 # remove the zip file and the extracted folder
 rm -f imagenet-object-localization-challenge.zip
 rm -rf /cache/data
