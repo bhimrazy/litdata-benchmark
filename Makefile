@@ -1,6 +1,6 @@
 .PHONY: benchmark
 
 benchmark:
-	touch result.txt
-	echo "hello world" > result.txt
+	touch result.md
+	echo "hello world" > result.md
 
