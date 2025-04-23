@@ -1,6 +1,5 @@
 .PHONY: benchmark
 
 benchmark:
-	touch result.md
-	echo "hello world" > result.md
-
+	@chmod +x ./scripts/executor.sh
+	@sh ./scripts/executor.sh
