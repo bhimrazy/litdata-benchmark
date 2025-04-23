@@ -1,5 +1,6 @@
 .PHONY: benchmark
 
 benchmark:
-	@chmod +x ./scripts/executor.sh
-	@sh ./scripts/executor.sh
+	pip install -U -r requirements.txt
+	@chmod +x ./scripts/benchmark.sh
+	@sh ./scripts/benchmark.sh
