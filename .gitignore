@@ -179,4 +179,6 @@ logs/
 profiles/
 artifacts/
 
+# project specific
 result.md
+# optimized_dataset_dir.txt
