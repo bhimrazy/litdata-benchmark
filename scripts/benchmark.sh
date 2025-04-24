@@ -20,7 +20,7 @@ fi
 echo "Raw Imagenet dataset found at $DIR_PATH."
 echo "Running benchmark and optimization scripts..."
 
-python src/set_optimized_dataset_name.py
+python src/optimized_dataset_name.py
 
 FILE="optimized_dataset_name.txt"
 
