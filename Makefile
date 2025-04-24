@@ -2,5 +2,5 @@
 
 benchmark:
 	touch result.md
-	python stream_imagenet.py > result.md
+	echo "hello world" > result.md
 
