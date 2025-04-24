@@ -18,15 +18,11 @@ EOF
 fi
 
 echo "Raw Imagenet dataset found at $DIR_PATH."
-# Proceed with the rest of the script
-# python scripts/benchmark.py --dataset_dir "$DIR_PATH"
-# python scripts/optimize.py --dataset_dir "$DIR_PATH"
-# Add your benchmarking and optimization commands here
 echo "Running benchmark and optimization scripts..."
 
-python src/set_env_var.py
+python src/set_optimized_dataset_name.py
 
-FILE="optimized_dataset_dir.txt"
+FILE="optimized_dataset_name.txt"
 
 if [ ! -e "$FILE" ]; then
   echo "Couldn't write to $FILE. Please check the script.">"$RESULT_FILE"
@@ -35,3 +31,28 @@ elif [ ! -s "$FILE" ]; then
   echo "File is empty. Please check the script." > "$RESULT_FILE"
   exit 1
 fi
+
+# --- optimize & stream datset ---
+
+RESULT_FILE="result.md"
+
+run_and_check() {
+    CMD="$1"
+    echo "Running: $CMD"
+    eval "$CMD"
+    STATUS=$?
+
+    if [ $STATUS -ne 0 ]; then
+        echo "### ❌ Error: Command failed — $CMD (exit code $STATUS)"
+        # Create a temp file with the error message + old content
+        {
+            echo -e "❌ **Error occurred while running:** \`$CMD\` (exit code $STATUS)\n"
+            cat "$RESULT_FILE"
+        } > "${RESULT_FILE}.tmp"
+        mv "${RESULT_FILE}.tmp" "$RESULT_FILE"
+        exit $STATUS
+    fi
+}
+
+run_and_check "python src/optimize/optimize_imagenet.py"
+run_and_check "python src/stream/stream_imagenet.py"
