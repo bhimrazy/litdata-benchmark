@@ -50,12 +50,12 @@ def shuffle(x):
     return np.random.permutation(x).tolist()
 
 
-def to_rgb(img):
-    if img.shape[0] == 1:
-        img = img.repeat((3, 1, 1))
-    if img.shape[0] == 4:
-        img = img[:3]
-    return img
+# def to_rgb(img):
+#     if img.shape[0] == 1:
+#         img = img.repeat((3, 1, 1))
+#     if img.shape[0] == 4:
+#         img = img[:3]
+#     return img
 
 
 @lru_cache(maxsize=1)
@@ -131,7 +131,7 @@ def clear_cache(cache_dir: str) -> None:
         if os.path.isdir(cache_dir):
             shutil.rmtree(cache_dir)
     except Exception as e:
-        # print(f"Error clearing cache: {e}")
+        print(f"Error clearing cache: {e}")
         pass
 
 

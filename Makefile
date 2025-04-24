@@ -1,6 +1,6 @@
 .PHONY: benchmark
 
 benchmark:
-	touch result.md
-	echo "hello world" > result.md
-
+	@pip install -U -r requirements.txt
+	@chmod +x ./scripts/benchmark.sh
+	@sh ./scripts/benchmark.sh

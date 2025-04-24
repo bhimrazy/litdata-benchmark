@@ -1,13 +1,12 @@
-import io
-import json
 import os
+from time import time
 from argparse import ArgumentParser, Namespace
 from functools import partial
-from typing import Any, List, Tuple
+from typing import Any
 
 import numpy as np
 from lightning import seed_everything
-from litdata import __version__, optimize, walk
+from litdata import optimize, walk
 from PIL import Image
 from tqdm import tqdm
 from utils import (
@@ -16,7 +15,9 @@ from utils import (
     load_imagenet_val_class_names,
     load_imagenet_class_index,
 )
+from src.optimized_dataset_name import get_optimized_dataset_name
 
+RESULT_FILE = "result.md"
 
 def parse_args() -> Namespace:
     """Parse command-line arguments.
@@ -26,6 +27,8 @@ def parse_args() -> Namespace:
     """
     args = ArgumentParser()
 
+    optimized_dir = get_optimized_dataset_name()
+
     args.add_argument(
         "--input_dir",
         default="/teamspace/s3_connections/imagenet-1m-template/raw/train",
@@ -34,7 +37,7 @@ def parse_args() -> Namespace:
     )
     args.add_argument(
         "--output_dir",
-        default=f"/teamspace/studios/this_studio/benchmark/data/imagenet-{__version__}/train",
+        default=f"/teamspace/datasets/imagenet-1m-optimized/{optimized_dir}",
         type=str,
         help="Output directory where the optimized dataset will be stored",
     )
@@ -104,6 +107,10 @@ def optimize_fn(data, args):
 
     return img, class_index
 
+def write_to_file(filepath: str, content: str)->None:
+    with open(filepath, "w") as f:
+        f.write(content)
+    print(f"Written to {filepath}")
 
 if __name__ == "__main__":
     seed_everything(42)
@@ -116,6 +123,10 @@ if __name__ == "__main__":
 
     inputs = get_inputs(args.input_dir)
 
+
+    dataset_len = len(inputs)
+    write_to_file(RESULT_FILE, f"Dataset length: {dataset_len}")
+    start_time = time()
     optimize(
         fn=partial(optimize_fn, args=args),
         inputs=inputs,
@@ -125,6 +136,7 @@ if __name__ == "__main__":
         num_downloaders=10,
         mode="overwrite",
     )
-
+    end_time = time()
+    write_to_file(RESULT_FILE, f"Time taken to optimize dataset: {end_time - start_time} seconds")
     clear_cache(cache_dir)
     print("Done!")
