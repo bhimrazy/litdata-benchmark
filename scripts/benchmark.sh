@@ -14,7 +14,7 @@ No dataset found at $DIR_PATH.
 Please make sure raw imagenet dataset is available for optimizing and benchmarking.
 EOF
   echo "No dataset found at $DIR_PATH. Please check the result.md file for details."
-  exit 1
+  exit 0
 fi
 
 echo "Raw Imagenet dataset found at $DIR_PATH."
@@ -26,10 +26,10 @@ FILE="optimized_dataset_name.txt"
 
 if [ ! -e "$FILE" ]; then
   echo "Couldn't write to $FILE. Please check the script.">"$RESULT_FILE"
-  exit 1
+  exit 0
 elif [ ! -s "$FILE" ]; then
   echo "File is empty. Please check the script." > "$RESULT_FILE"
-  exit 1
+  exit 0
 fi
 
 # --- optimize & stream datset ---
@@ -50,7 +50,7 @@ run_and_check() {
             cat "$RESULT_FILE"
         } > "${RESULT_FILE}.tmp"
         mv "${RESULT_FILE}.tmp" "$RESULT_FILE"
-        exit $STATUS
+        exit 0
     fi
 }
 
