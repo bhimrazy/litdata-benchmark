@@ -1,4 +1,5 @@
 import os
+import sys
 from time import time
 
 import lightning as L
@@ -6,8 +7,11 @@ import torch
 import torchvision.transforms.v2 as T
 from litdata import StreamingDataLoader, StreamingDataset, __version__
 from tqdm import tqdm
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from utils import clear_cache, to_rgb
-from src.optimized_dataset_name import get_optimized_dataset_name
+
+from optimized_dataset_name import get_optimized_dataset_name
 
 RESULT_FILE = "result.md"
 
@@ -34,7 +38,7 @@ class ImageNetStreamingDataset(StreamingDataset):
         # ), class_index  # int cannot be used as class_index is a filepath string
 
 def write_to_file(filename: str, content: str)->None:
-    with open(filename, "w") as f:
+    with open(filename, "w+") as f:
         f.write(content)
     print(f"Written to {filename}")
 
@@ -45,7 +49,7 @@ if __name__ == "__main__":
     print(f"Benchmarking using litdata version: {__version__}")
 
     # Clean cache
-    cache_dir = "/cache/chunks/"
+    cache_dir = ".cache/chunks/"
     clear_cache(cache_dir)
     
     # # Uncomment the following lines to use DDP

@@ -1,4 +1,5 @@
 import os
+import sys
 from time import time
 from argparse import ArgumentParser, Namespace
 from functools import partial
@@ -9,13 +10,16 @@ from lightning import seed_everything
 from litdata import optimize, walk
 from PIL import Image
 from tqdm import tqdm
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from utils import (
     class_names_to_index_map,
     clear_cache,
     load_imagenet_val_class_names,
     load_imagenet_class_index,
 )
-from src.optimized_dataset_name import get_optimized_dataset_name
+from optimized_dataset_name import get_optimized_dataset_name
 
 RESULT_FILE = "result.md"
 
@@ -108,7 +112,7 @@ def optimize_fn(data, args):
     return img, class_index
 
 def write_to_file(filepath: str, content: str)->None:
-    with open(filepath, "w") as f:
+    with open(filepath, "w+") as f:
         f.write(content)
     print(f"Written to {filepath}")
 
@@ -134,6 +138,7 @@ if __name__ == "__main__":
         chunk_bytes="64MB",
         reorder_files=False,
         num_downloaders=10,
+        num_workers=16,
         mode="overwrite",
     )
     end_time = time()
