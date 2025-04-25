@@ -38,8 +38,8 @@ class ImageNetStreamingDataset(StreamingDataset):
         # ), class_index  # int cannot be used as class_index is a filepath string
 
 def write_to_file(filename: str, content: str)->None:
-    with open(filename, "w+") as f:
-        f.write(content)
+    with open(filename, "a") as f:
+        f.write("\n\n" + content)
     print(f"Written to {filename}")
 
 if __name__ == "__main__":

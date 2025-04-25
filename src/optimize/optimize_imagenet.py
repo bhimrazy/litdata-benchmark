@@ -112,8 +112,8 @@ def optimize_fn(data, args):
     return img, class_index
 
 def write_to_file(filepath: str, content: str)->None:
-    with open(filepath, "w+") as f:
-        f.write(content)
+    with open(filepath, "a") as f:
+        f.write("\n\n"+content)
     print(f"Written to {filepath}")
 
 if __name__ == "__main__":
