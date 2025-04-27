@@ -7,6 +7,7 @@ from typing import List, Optional, Tuple
 import numpy as np
 import requests
 import torch
+from litdata.constants import _DEFAULT_CACHE_DIR, _DEFAULT_LIGHTNING_CACHE_DIR
 
 
 @lru_cache(maxsize=1)
@@ -125,13 +126,12 @@ def get_classes(
     return classes, new_class_names
 
 
-def clear_cache(cache_dir: str) -> None:
+def clear_cache_dir(cache_dir: str) -> None:
     """Clear the cache directory."""
     try:
         if os.path.isdir(cache_dir):
             shutil.rmtree(cache_dir)
-    except Exception as e:
-        print(f"Error clearing cache: {e}")
+    except Exception:
         pass
 
 
@@ -145,3 +145,24 @@ def to_rgb(img):
         if img.mode == "L":
             img = img.convert("RGB")
     return img
+
+
+def default_cache_dir(cache_dir: Optional[str] = None) -> str:
+    """
+    Determine the default cache directory.
+
+    Args:
+        cache_dir (Optional[str]): Custom cache directory provided by the user.
+
+    Returns:
+        str: The custom cache directory if provided, otherwise the default cache directory
+             based on whether the environment is Lightning Cloud.
+    """
+    is_lightning_cloud = (
+        "LIGHTNING_CLUSTER_ID" in os.environ
+        and "LIGHTNING_CLOUD_PROJECT_ID" in os.environ
+    )
+    default_cache_root = (
+        _DEFAULT_LIGHTNING_CACHE_DIR if is_lightning_cloud else _DEFAULT_CACHE_DIR
+    )
+    return cache_dir or default_cache_root

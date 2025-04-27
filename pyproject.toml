@@ -1,0 +1,24 @@
+[project]
+name = "litdata-benchmark"
+version = "0.1.0"
+description = "CLI and tools for benchmarking and optimizing datasets with LitData"
+authors = [
+    { name = "Bhimraj Yadav", email = "bhimrajyadav977@gmail.com" }
+]
+dependencies = [
+    "lightning",
+    "lightning-sdk",
+    "litdata",
+    "numpy<2.0.0",
+    "pillow",
+    "torch",
+    "torchvision",
+    "tqdm",
+    "typer"
+]
+
+[project.scripts]
+lb = "lb.cli:app"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]

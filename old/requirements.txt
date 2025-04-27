@@ -1,0 +1,9 @@
+lightning_sdk
+lightning
+litdata
+numpy<2.0.0
+pillow
+requests
+s5cmd
+torch
+torchvision
