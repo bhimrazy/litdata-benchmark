@@ -18,7 +18,9 @@ def stream_imagenet(
     ),
     dtype: str = typer.Option("float32", help="Data type: float32 or float16"),
     batch_size: int = typer.Option(256, help="Batch size for benchmarking"),
-    num_workers: int = typer.Option(os.cpu_count(), help="Number of workers for dataloader"),
+    num_workers: int = typer.Option(
+        os.cpu_count(), help="Number of workers for dataloader"
+    ),
     epochs: int = typer.Option(2, help="Number of epochs to run benchmark"),
     max_cache_size: str = typer.Option(
         "200GB", help="Max cache size for streaming dataset"
@@ -41,6 +43,7 @@ def stream_imagenet(
         def __init__(self, *args, **kwargs):
             self.transform = T.Compose(
                 [
+                    # T.ToImage(),
                     T.RandomResizedCrop(224, antialias=True),
                     T.RandomHorizontalFlip(),
                     T.ToDtype(
