@@ -48,6 +48,7 @@ Convert the imagaenet raw dataset to be used as the imagefolder by converting th
  Clone `https://github.com/libffcv/ffcv-imagenet` and prep dataset preparation
  ```sh
 git clone https://github.com/libffcv/ffcv-imagenet
+cd ffcv-imagenet/
 pip install -r requirements.txt
  ```
 
