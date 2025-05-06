@@ -1,12 +1,19 @@
 import os
+import sys
 from time import time
+from pathlib import Path
+from tqdm import tqdm
 
+import lightning as L
 from lightning import seed_everything
+
 from litdata import StreamingDataLoader, StreamingDataset, __version__
 from litdata.streaming.item_loader import ParquetLoader
-from tqdm import tqdm
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from utils import clear_cache
-from pathlib import Path
+
 
 SHUFFLE: bool = bool(int(os.getenv("SHUFFLE", 0)))
 PRELOAD: bool = bool(int(os.getenv("PRELOAD", 0)))
@@ -31,6 +38,9 @@ if __name__ == "__main__":
     print(
         f"Shuffle: {SHUFFLE}, Preload: {PRELOAD}, Low Memory: {LOW_MEMORY} \nDataset: {ACTIVE_DATASET}"
     )
+
+    # fabric = L.Fabric(strategy="ddp", accelerator="cpu", devices=2)
+    # fabric.launch()
 
     # Define the StreamingDataset
     dataset = StreamingDataset(
